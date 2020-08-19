@@ -39,6 +39,16 @@ pub mod h5t;
 pub mod h5vl;
 pub mod h5z;
 
+#[cfg(feature = "hl")]
+pub mod hl {
+    pub mod h5do;
+    pub mod h5ds;
+    pub mod h5im;
+    pub mod h5lt;
+    pub mod h5pt;
+    pub mod h5tb;
+}
+
 #[cfg(hdf5_1_8_15)]
 pub mod h5pl;
 
@@ -52,8 +62,8 @@ mod internal_prelude {
     pub use crate::h5t::H5T_cset_t;
     pub use libc::{int64_t, off_t, size_t, ssize_t, time_t, uint32_t, uint64_t, FILE};
     pub use std::os::raw::{
-        c_char, c_double, c_float, c_int, c_long, c_longlong, c_uchar, c_uint, c_ulong,
-        c_ulonglong, c_void,
+        c_char, c_double, c_float, c_int, c_long, c_longlong, c_short, c_uchar, c_uint, c_ulong,
+        c_ulonglong, c_ushort, c_void,
     };
 }
 
