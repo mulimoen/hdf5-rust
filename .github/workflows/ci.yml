@@ -192,7 +192,7 @@ jobs:
           else
             VERSION=1.12.0
             DL_PATH=hdf5-1.12.0-Std-win10_64-vs16.zip
-            echo "MSI_PATH=hdf5\\HDF5-1.12.0-win64.msi" >> $GITHUB_ENV
+            echo "MSI_PATH=hdf\\HDF5-1.12.0-win64.msi" >> $GITHUB_ENV
           fi
           BASE_URL=https://support.hdfgroup.org/ftp/HDF5/prev-releases
           echo "DL_URL=$BASE_URL/hdf5-${{matrix.version}}/hdf5-$VERSION/bin/$DL_PATH" >> $GITHUB_ENV
