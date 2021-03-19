@@ -1544,6 +1544,9 @@ impl FileAccess {
             }
             *layout.get_mut(i - 1) = 0xff - mapping[j];
         }
+        for &memb_name in &memb_name {
+            crate::util::h5_free_memory(memb_name as *mut _);
+        }
         let relax = relax > 0;
         let drv = MultiDriver { files, layout, relax };
         drv.validate().map(|_| drv)
