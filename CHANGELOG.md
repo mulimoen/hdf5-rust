@@ -71,6 +71,10 @@
 - The version of `hdf5` built in `hdf5-src` has been updated from `1.10.6` to `1.10.7`.
 - The `zlib` dependency is no longer included with `default-features`.
 
+### Fixed
+
+- A memory leak of handles has been identified and fixed.
+
 ## 0.7.1
 
 ### Added
