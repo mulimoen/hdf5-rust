@@ -51,7 +51,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with: {submodules: true}
+        with: {submodules: false}
       - name: Install Rust (${{matrix.rust}})
         uses: actions-rs/toolchain@v1
         with: {toolchain: stable, profile: minimal, override: true}
@@ -60,7 +60,7 @@ jobs:
       - name: Build and test all crates
         run: |
           [ "${{matrix.mpi}}" != "" ] && FEATURES=mpio
-          cargo test -vv --features="$FEATURES"
+          cargo test -vv --features="$FEATURES" --workspace --exclude hdf5-src
 
   conda:
     name: conda
@@ -91,7 +91,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with: {submodules: true}
+        with: {submodules: false}
       - name: Install Rust (${{matrix.rust}})
         uses: actions-rs/toolchain@v1
         with: {toolchain: '${{matrix.rust}}', profile: minimal, override: true}
@@ -109,7 +109,7 @@ jobs:
           [ "${{runner.os}}" != "Windows" ] && export RUSTFLAGS="-C link-args=-Wl,-rpath,$CONDA_PREFIX/lib"
           [ "${{matrix.mpi}}" == "mpich" ] && [ "${{runner.os}}" == "Linux" ] && export MPICH_CC=$(which gcc)
           [ "${{matrix.mpi}}" == "openmpi" ] && [ "${{runner.os}}" == "Linux" ] && export OMPI_CC=$(which gcc)
-          cargo test -vv --features="$FEATURES"
+          cargo test -vv --features="$FEATURES" --workspace --exclude hdf5-src
 
   static:
     name: static
@@ -148,7 +148,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with: {submodules: true}
+        with: {submodules: false}
       - name: Install Rust (${{matrix.rust}})
         uses: actions-rs/toolchain@v1
         with: {toolchain: '${{matrix.rust}}', profile: minimal, override: true}
@@ -161,7 +161,7 @@ jobs:
       - name: Build and test all crates
         run: |
           [ "${{matrix.mpi}}" != "serial" ] && FEATURES=mpio
-          cargo test -vv --features="$FEATURES"
+          cargo test -vv --features="$FEATURES" --workspace --exclude hdf5-src
 
   msi:
     name: msi
@@ -177,7 +177,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with: {submodules: true}
+        with: {submodules: false}
       - name: Install Rust (${{matrix.rust}})
         uses: actions-rs/toolchain@v1
         with: {toolchain: stable, target: "${{matrix.target}}", profile: minimal, override: true}
@@ -207,7 +207,7 @@ jobs:
           7z x hdf5.zip -y
           msiexec /i ${{env.MSI_PATH}} /quiet /qn /norestart
       - name: Build and test all crates
-        run: cargo test -vv
+        run: cargo test --workspace -vv --exclude hdf5-src
 
   msrv:
     name: Minimal Supported Rust Version
@@ -238,4 +238,4 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get install wine64 mingw-w64
       - name: Build and test
-        run: env CARGO_TARGET_X86_64_PC_WINDOWS_GNU_RUNNER=wine64 cargo test --features hdf5-sys/static --target x86_64-pc-windows-gnu -- --skip test_compile_fail
+        run: env CARGO_TARGET_X86_64_PC_WINDOWS_GNU_RUNNER=wine64 cargo test --workspace --features hdf5-sys/static --target x86_64-pc-windows-gnu -- --skip test_compile_fail
