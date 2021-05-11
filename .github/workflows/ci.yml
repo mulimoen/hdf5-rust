@@ -206,6 +206,9 @@ jobs:
           C:\msys64\usr\bin\wget.exe -q -O hdf5.zip ${{env.DL_URL}}
           7z x hdf5.zip -y
           msiexec /i ${{env.MSI_PATH}} /quiet /qn /norestart
+      - name: Export HDF5_DIR
+        if: matrix.toolchain == 'stable-gnu'
+        run: echo "HDF5_DIR=C:\\Program Files\\HDF_Group\\HDF5\\1.12.0" >> $GITHUB_ENV
       - name: Build and test all crates
         run: cargo test --workspace -vv --exclude hdf5-src
 
