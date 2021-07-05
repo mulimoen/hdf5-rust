@@ -28,7 +28,9 @@ jobs:
         uses: actions-rs/toolchain@v1
         with: {toolchain: stable, profile: minimal, override: true}
       - name: Install HDF5 (${{matrix.version}})
-        run: brew install ${{matrix.version}} valgrind
+        run: brew install ${{matrix.version}}
+      - name: Install valgrind
+        run: brew tap LouisBrunner/valgrind && brew install --HEAD LouisBrunner/valgrind/valgrind
       - name: Build and test all crates
         run: |
           [ "${{matrix.mpi}}" != "" ] && FEATURES=mpio
