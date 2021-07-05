@@ -36,4 +36,4 @@ jobs:
           [ "${{matrix.mpi}}" != "" ] && FEATURES=mpio
           cargo test -vv --features="$FEATURES" -j1 || echo ""
       - name: Run build script under valgrind
-        run: valgrind /Users/runner/work/hdf5-rust/hdf5-rust/target/debug/build/hdf5-sys-575eea4c73ecfbf4/build-script-build
+        run: valgrind /Users/runner/work/hdf5-rust/hdf5-rust/target/debug/build/hdf5-sys-575eea4c73ecfbf4/build-script-build --track-origins=yes
