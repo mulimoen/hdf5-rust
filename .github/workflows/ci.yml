@@ -32,4 +32,4 @@ jobs:
       - name: Build and test all crates
         run: |
           [ "${{matrix.mpi}}" != "" ] && FEATURES=mpio
-          cargo test -vv --features="$FEATURES"
+          cargo test -vv --features="$FEATURES" -j1
