@@ -84,19 +84,28 @@ impl Display for RuntimeError {
 fn get_runtime_version_single<P: AsRef<Path>>(path: P) -> Result<Version, Box<dyn Error>> {
     let lib = unsafe { libloading::Library::new(path.as_ref()) }?;
 
+    type H5dont_atexit_t = unsafe extern "C" fn() -> c_int;
+    let H5dont_atexit = unsafe { lib.get::<H5dont_atexit_t>(b"H5dont_atexit")? };
+
     type H5open_t = unsafe extern "C" fn() -> c_int;
     let H5open = unsafe { lib.get::<H5open_t>(b"H5open")? };
+
+    type H5close_t = unsafe extern "C" fn() -> c_int;
+    let H5close = unsafe { lib.get::<H5close_t>(b"H5close")? };
 
     type H5get_libversion_t = unsafe extern "C" fn(*mut c_uint, *mut c_uint, *mut c_uint) -> c_int;
     let H5get_libversion = unsafe { lib.get::<H5get_libversion_t>(b"H5get_libversion")? };
 
     let mut v: (c_uint, c_uint, c_uint) = (0, 0, 0);
     unsafe {
+        H5dont_atexit();
         if H5open() != 0 {
             Err("H5open()".into())
         } else if H5get_libversion(&mut v.0, &mut v.1, &mut v.2) != 0 {
+            H5close();
             Err("H5get_libversion()".into())
         } else {
+            H5close();
             Ok(Version::new(v.0 as _, v.1 as _, v.2 as _))
         }
     }
