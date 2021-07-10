@@ -33,6 +33,6 @@ jobs:
         run: brew tap LouisBrunner/valgrind && brew install --HEAD LouisBrunner/valgrind/valgrind
       - name: Build hdf5-sys
         run: |
-          cargo build hdf5-sys -vv --features=mpio || echo ""
+          cargo build --package hdf5-sys -vv --features=mpio || echo ""
       - name: Run build script under valgrind
         run: valgrind --track-origins=yes /Users/runner/work/hdf5-rust/hdf5-rust/target/debug/build/hdf5-sys-575eea4c73ecfbf4/build-script-build
