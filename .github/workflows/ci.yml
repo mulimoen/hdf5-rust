@@ -31,9 +31,8 @@ jobs:
         run: brew install ${{matrix.version}}
       - name: Install valgrind
         run: brew tap LouisBrunner/valgrind && brew install --HEAD LouisBrunner/valgrind/valgrind
-      - name: Build and test all crates
+      - name: Build hdf5-sys
         run: |
-          [ "${{matrix.mpi}}" != "" ] && FEATURES=mpio
-          cargo test -vv --features="$FEATURES" -j1 || echo ""
+          cargo build hdf5-sys -vv --features=mpio || echo ""
       - name: Run build script under valgrind
-        run: valgrind /Users/runner/work/hdf5-rust/hdf5-rust/target/debug/build/hdf5-sys-575eea4c73ecfbf4/build-script-build --track-origins=yes
+        run: valgrind --track-origins=yes /Users/runner/work/hdf5-rust/hdf5-rust/target/debug/build/hdf5-sys-575eea4c73ecfbf4/build-script-build
