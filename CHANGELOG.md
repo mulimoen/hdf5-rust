@@ -51,7 +51,8 @@
 - Added support for creating external links on a `Group` with `link_external`.
 - Added `Location` methods: `get_info`, `get_info_by_name`, `loc_type`, and `open_by_token`.
 - Added `Group` methods: `iter_visit`, `iter_visit_default`, `get_all_of_type`, `datasets`, `groups`, and `named_datatypes`.
-  
+- Additional iterators for getting groups, datasets, and datatypes.
+
  ### Changed
 
 - Required Rust compiler version is now `1.51`.
