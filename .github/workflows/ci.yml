@@ -234,6 +234,27 @@ jobs:
       - name: Build and test all crates
         run: cargo test -vv
 
+  conda-download:
+    name: Conda forge ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu, rust: stable}
+          - {os: windows, rust: stable-msvc}
+          - {os: windows, rust: stable-gnu}
+          - {os: macos, rust: stable}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with: {submodules: false}
+      - name: Install Rust (${{ matrix.rust }})
+        uses: actions-rs/toolchain@v1
+        with: {toolchain: '${{ matrix.rust }}', profile: minimal, override: true}
+      - name: Run tests
+        run: cargo test --features hdf5-sys/conda --workspace --exclude hdf5-derive,hdf5-src
+
   msrv:
     name: Minimal Supported Rust Version
     runs-on: ubuntu-18.04
@@ -264,6 +285,7 @@ jobs:
         run: sudo apt-get update && sudo apt install wine64 mingw-w64
       - name: Build and test
         run: env CARGO_TARGET_X86_64_PC_WINDOWS_GNU_RUNNER=wine64 cargo test --features hdf5-sys/static --target x86_64-pc-windows-gnu -- --skip test_compile_fail
+
   addr_san:
     name: Address sanitizer
     runs-on: ubuntu-latest
