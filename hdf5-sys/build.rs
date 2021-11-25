@@ -691,7 +691,7 @@ fn link_to_conda() {
     let hdf5_lib = env::var("DEP_HDF5CONDA_LIBRARY").unwrap();
     println!("cargo:library={}", &hdf5_lib);
 
-    println!("cargo:rustc-link-search={}/lib", &hdf5_root);
+    println!("cargo:rustc-link-search={}", &hdf5_root);
     println!("cargo:rustc-link-lib={}", &hdf5_lib);
 
     let header = Header::parse(&hdf5_incdir);
