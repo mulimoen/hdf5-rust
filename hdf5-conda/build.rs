@@ -38,7 +38,7 @@ const INC_PATH: &str = {
         if #[cfg(any(target_os = "linux", target_os = "macos"))] {
             "include"
         } else if #[cfg(target_os = "windows")] {
-            "Library\\include"
+            "Library/include"
         } else {
             compile_error!("This crate can not be used on this platform");
         }
@@ -62,7 +62,7 @@ const LIB_PATH: &str = {
         if #[cfg(any(target_os = "linux", target_os = "macos"))] {
             "lib"
         } else if #[cfg(target_os = "windows")] {
-            "Library\\lib"
+            "Library/lib"
         } else {
             compile_error!("This crate can not be used on this platform");
         }
