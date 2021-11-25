@@ -18,6 +18,7 @@ libc = "0.2"
 mpi-sys = { version = "0.1", optional = true }
 libz-sys = { version = "1.0.25", optional = true, default-features = false }
 hdf5-src = { path = "../hdf5-src", version = "0.8.1", optional = true }  # !V
+hdf5-conda = { path = "../hdf5-conda", version = "0.0.1", optional = true }  # !V
 
 # Please see README for further explanation of these feature flags
 [features]
@@ -28,6 +29,7 @@ threadsafe = ["hdf5-src/threadsafe"]
 zlib = ["libz-sys", "hdf5-src/zlib"]
 static = ["hdf5-src"]
 deprecated = ["hdf5-src/deprecated"]
+conda = ["hdf5-conda"]
 
 [build-dependencies]
 libloading = "0.7"

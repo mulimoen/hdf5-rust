@@ -1,0 +1,16 @@
+[package]
+name = "hdf5-conda"
+version = "0.0.1"  # !V
+keywords = ["hdf5"]
+build = "build.rs"
+repository = "https://github.com/aldanor/hdf5-rust"
+homepage = "https://github.com/aldanor/hdf5-rust"
+description = "Build script for including hdf5 from conda."
+edition = "2018"
+links = "hdf5conda"
+
+[build-dependencies]
+attohttpc = { version = "0.18.0", default-features = false, features = ["compress", "tls-rustls"] }
+bzip2 = "0.4.3"
+cfg-if = "1.0.0"
+tar = "0.4.37"
