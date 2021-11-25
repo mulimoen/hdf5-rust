@@ -217,6 +217,11 @@ impl Header {
 
 fn get_conf_header<P: AsRef<Path>>(inc_dir: P) -> PathBuf {
     let inc_dir = inc_dir.as_ref();
+    println!("{}", inc_dir.display());
+
+    for d in inc_dir.read_dir().unwrap() {
+        println!("{:?}", d.unwrap());
+    }
 
     if inc_dir.join("H5pubconf.h").is_file() {
         inc_dir.join("H5pubconf.h")
