@@ -75,9 +75,9 @@ const DOWNLOAD_BINARY: &str = {
             "linux-64/hdf5-1.12.1-nompi_h2750804_102.tar.bz2"
         } else if #[cfg(all(target_os = "linux", target_arch = "aarch64"))] {
             "linux-aarch64/hdf5-1.12.1-nompi_h774d4d8_102.tar.bz2"
-        } else if #[cfg(any(target_os = "macos", target_arch = "x86_64"))] {
+        } else if #[cfg(all(target_os = "macos", target_arch = "x86_64"))] {
             "osx-64/hdf5-1.12.1-nompi_h2f0ef1a_102.tar.bz2"
-        } else if #[cfg(any(target_os = "windows", target_arch = "x86_64"))] {
+        } else if #[cfg(all(target_os = "windows", target_arch = "x86_64"))] {
             "win-64/hdf5-1.12.1-nompi_h57737ce_102.tar.bz2"
         } else {
             compile_error!("This package can not be used on this arch");
