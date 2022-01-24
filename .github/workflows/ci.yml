@@ -32,6 +32,7 @@ jobs:
       - name: Configure environment
         shell: bash
         run: |
+          BASE_URL=https://support.hdfgroup.org/ftp/HDF5/prev-releases
           if [[ "${{matrix.version}}" == "1.8" ]]; then
             VERSION=1.8.21
             DL_PATH=hdf5-1.8.21-Std-win7_64-vs14.zip
@@ -53,7 +54,6 @@ jobs:
             echo "MSI_PATH=hdf\\HDF5-1.12.1-win64.msi" >> $GITHUB_ENV
             echo "DL_URL=$BASE_URL/hdf5-1.12/hdf5-1.12.1/bin/$DL_PATH" >> $GITHUB_ENV
           fi
-          BASE_URL=https://support.hdfgroup.org/ftp/HDF5/prev-releases
           echo "C:\\Program Files\\HDF_Group\\HDF5\\$VERSION\\bin" >> $GITHUB_PATH
       - name: Install HDF5 (${{matrix.version}})
         shell: pwsh
