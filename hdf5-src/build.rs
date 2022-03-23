@@ -36,13 +36,13 @@ fn main() {
 
     if feature_enabled("ZLIB") {
         let zlib_include_dir = env::var_os("DEP_Z_INCLUDE").unwrap();
-        let mut zlib_header = env::split_paths(&zlib_include_dir).next().unwrap();
-        zlib_header.push("zlib.h");
+        let mut zlib_header_dir = env::split_paths(&zlib_include_dir).next().unwrap();
         let zlib_lib = "z";
         cfg.define("HDF5_ENABLE_Z_LIB_SUPPORT", "ON")
-            .define("H5_ZLIB_HEADER", &zlib_header)
+            .define("H5_ZLIB_HEADER", "zlib.h")
+            .define("ZLIB_INCLUDE_DIRS", &zlib_header_dir)
             .define("ZLIB_STATIC_LIBRARY", &zlib_lib);
-        println!("cargo:zlib_header={}", zlib_header.to_str().unwrap());
+        println!("cargo:zlib_header={}", zlib_header_dir.join("zlib.h").to_str().unwrap());
         println!("cargo:zlib={}", zlib_lib);
     }
 
