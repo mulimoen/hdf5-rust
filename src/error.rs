@@ -3,7 +3,7 @@ use std::error::Error as StdError;
 use std::fmt;
 use std::ops::Deref;
 use std::panic;
-use std::ptr;
+use std::ptr::{self, addr_of_mut};
 
 use ndarray::ShapeError;
 
@@ -95,7 +95,7 @@ impl ErrorStack {
         }
 
         let mut data = CallbackData { stack: ExpandedErrorStack::new(), err: None };
-        let data_ptr: *mut c_void = (&mut data as *mut CallbackData).cast::<c_void>();
+        let data_ptr: *mut c_void = addr_of_mut!(data).cast::<c_void>();
 
         let stack_id = self.handle().id();
         h5lock!({
