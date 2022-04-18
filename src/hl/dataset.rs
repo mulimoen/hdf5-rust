@@ -1111,4 +1111,20 @@ mod tests {
         let e = SimpleExtents::new(&[1, 1, 100]);
         assert_eq!(compute_chunk_shape(&e, 51), vec![1, 1, 100]);
     }
+
+    #[test]
+    fn test_read_write_scalar() {
+        use crate::internal_prelude::*;
+        with_tmp_file(|file| {
+            assert!(crate::filters::deflate_available());
+            let val: f64 = 0.2;
+            let dataset = file.new_dataset::<f64>().deflate(3).create("foo");
+            assert_err_re!(dataset, "Filter requires dataset to be chunked");
+
+            let dataset = file.new_dataset::<f64>().create("foo").unwrap();
+            dataset.write_scalar(&val).unwrap();
+            let val_back = dataset.read_scalar().unwrap();
+            assert_eq!(val, val_back);
+        })
+    }
 }
