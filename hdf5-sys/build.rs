@@ -217,6 +217,11 @@ impl Header {
 
 fn get_conf_header<P: AsRef<Path>>(inc_dir: P) -> PathBuf {
     let inc_dir = inc_dir.as_ref();
+    println!("{}", inc_dir.display());
+
+    for d in inc_dir.read_dir().unwrap() {
+        println!("{:?}", d.unwrap());
+    }
 
     if inc_dir.join("H5pubconf.h").is_file() {
         inc_dir.join("H5pubconf.h")
@@ -639,6 +644,8 @@ impl Config {
 fn main() {
     if feature_enabled("STATIC") && std::env::var_os("HDF5_DIR").is_none() {
         get_build_and_emit();
+    } else if feature_enabled("CONDA") && std::env::var_os("HDF5_DIR").is_none() {
+        link_to_conda();
     } else {
         let mut searcher = LibrarySearcher::new_from_env();
         searcher.try_locate_hdf5_library();
@@ -675,6 +682,22 @@ fn get_build_and_emit() {
 
     println!("cargo:rustc-link-search=native={}/lib", &hdf5_root);
     println!("cargo:rustc-link-lib=static={}", &hdf5_lib);
+
+    let header = Header::parse(&hdf5_incdir);
+    let config = Config { header, inc_dir: "".into(), link_paths: Vec::new() };
+    config.emit_cfg_flags();
+}
+
+fn link_to_conda() {
+    let hdf5_root = env::var("DEP_HDF5CONDA_ROOT").unwrap();
+    println!("cargo:root={}", &hdf5_root);
+    let hdf5_incdir = env::var("DEP_HDF5CONDA_INCLUDE").unwrap();
+    println!("cargo:include={}", &hdf5_incdir);
+    let hdf5_lib = env::var("DEP_HDF5CONDA_LIBRARY").unwrap();
+    println!("cargo:library={}", &hdf5_lib);
+
+    println!("cargo:rustc-link-search={}", &hdf5_root);
+    println!("cargo:rustc-link-lib={}", &hdf5_lib);
 
     let header = Header::parse(&hdf5_incdir);
     let config = Config { header, inc_dir: "".into(), link_paths: Vec::new() };
