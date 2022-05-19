@@ -33,5 +33,6 @@ jobs:
         shell: bash
         run: |
           pacman -S --noconfirm clang64/mingw-w64-clang-x86_64-hdf5
+          ls C:\\msys64\\usr\\include
       - name: Build and test all crates
         run: cargo test -vv
