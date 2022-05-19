@@ -39,6 +39,6 @@ jobs:
           ls C:\\msys64
           echo ""
           ls C:\\msys64\\usr\\bin
-          pacboy find hdf5
+          pacman -Ss hdf5
       #- name: Build and test all crates
       #  run: cargo test -vv
