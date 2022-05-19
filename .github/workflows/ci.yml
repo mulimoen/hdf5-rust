@@ -27,11 +27,12 @@ jobs:
         shell: bash
         run: |
           echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
-          echo "PKG_CONFIG_PATH=C\:\\msys64\\usr\\share\\pkgconfig" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=C:\\msys64\\usr\\share\\pkgconfig" >> $GITHUB_ENV
       - name: Install HDF5 (${{matrix.version}})
         shell: bash
         run: |
           pacman -S --noconfirm clang64/mingw-w64-clang-x86_64-hdf5
+          ls C:\\msys64\\usr\\share\\pkgconfig
           pkg-config --libs --cflags hdf5
       - name: Build and test all crates
         run: cargo test -vv
