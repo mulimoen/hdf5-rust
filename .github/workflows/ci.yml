@@ -27,7 +27,7 @@ jobs:
         shell: bash
         run: |
           echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
-          echo "PKG_CONFIG_PATH=C:\\msys64\\usr\\share\\pkgconfig" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=C\:\\msys64\\usr\\share\\pkgconfig" >> $GITHUB_ENV
       - name: Install HDF5 (${{matrix.version}})
         shell: bash
         run: |
