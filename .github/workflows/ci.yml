@@ -32,12 +32,13 @@ jobs:
         shell: bash
         run: |
           echo "C:\\msys64" >> $GITHUB_PATH
+          echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
       - name: Install HDF5 (${{matrix.version}})
         shell: bash
         run: |
           ls C:\\msys64
           echo ""
-          ls C:\\msys64\\usr
+          ls C:\\msys64\\usr\\bin
           pacboy find hdf5
       #- name: Build and test all crates
       #  run: cargo test -vv
