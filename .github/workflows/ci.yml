@@ -48,10 +48,8 @@ jobs:
           echo "DL_URL=$BASE_URL/hdf5-${{matrix.version}}/hdf5-$VERSION/bin/$DL_PATH" >> $GITHUB_ENV
           echo "C:\\Program Files\\HDF_Group\\HDF5\\$VERSION\\bin" >> $GITHUB_PATH
       - name: Install HDF5 (${{matrix.version}})
-        shell: pwsh
+        shell: bash
         run: |
-          C:\msys64\usr\bin\wget.exe -q -O hdf5.zip ${{env.DL_URL}}
-          7z x hdf5.zip -y
-          msiexec /i ${{env.MSI_PATH}} /quiet /qn /norestart
-      - name: Build and test all crates
-        run: cargo test -vv
+          pacboy find hdf5
+      #- name: Build and test all crates
+      #  run: cargo test -vv
