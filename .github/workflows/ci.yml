@@ -31,14 +31,10 @@ jobs:
       - name: Configure environment
         shell: bash
         run: |
-          echo "C:\\msys64" >> $GITHUB_PATH
           echo "C:\\msys64\\usr\\bin" >> $GITHUB_PATH
       - name: Install HDF5 (${{matrix.version}})
         shell: bash
         run: |
-          ls C:\\msys64
-          echo ""
-          ls C:\\msys64\\usr\\bin
-          pacman -Ss hdf5
+          pacman -S clang64/mingw-w64-clang-x86_64-hdf5
       #- name: Build and test all crates
       #  run: cargo test -vv
