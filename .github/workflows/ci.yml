@@ -31,30 +31,13 @@ jobs:
       - name: Configure environment
         shell: bash
         run: |
-          if [[ "${{matrix.version}}" == "1.8" ]]; then
-            VERSION=1.8.21
-            DL_PATH=hdf5-1.8.21-Std-win7_64-vs14.zip
-            echo "MSI_PATH=hdf\\HDF5-1.8.21-win64.msi" >> $GITHUB_ENV
-          elif [[ "${{matrix.version}}" == "1.10" ]]; then
-            VERSION=1.10.0
-            DL_PATH=windows/extra/hdf5-1.10.0-win64-VS2015-shared.zip
-            echo "MSI_PATH=hdf5\\HDF5-1.10.0-win64.msi" >> $GITHUB_ENV
-          elif [[ "${{matrix.version}}" == "1.12" ]]; then
-            VERSION=1.12.0
-            DL_PATH=hdf5-1.12.0-Std-win10_64-vs16.zip
-            echo "MSI_PATH=hdf\\HDF5-1.12.0-win64.msi" >> $GITHUB_ENV
-          else
-            VERSION=1.13.0
-            DL_PATH=windows/hdf5-1.13.0-Std-win10_64-vs16.zip
-            echo "MSI_PATH=hdf\\HDF5-1.13.0-win64.msi" >> $GITHUB_ENV
-          fi
-          BASE_URL=https://support.hdfgroup.org/ftp/HDF5/prev-releases
-          echo "DL_URL=$BASE_URL/hdf5-${{matrix.version}}/hdf5-$VERSION/bin/$DL_PATH" >> $GITHUB_ENV
-          echo "C:\\Program Files\\HDF_Group\\HDF5\\$VERSION\\bin" >> $GITHUB_PATH
+          echo "C:\\msys64" >> $GITHUB_PATH
       - name: Install HDF5 (${{matrix.version}})
         shell: bash
         run: |
           ls C:\\msys64
+          echo ""
+          ls C:\\msys64\\usr
           pacboy find hdf5
       #- name: Build and test all crates
       #  run: cargo test -vv
