@@ -35,6 +35,6 @@ jobs:
       - name: Install HDF5 (${{matrix.version}})
         shell: bash
         run: |
-          pacman -S clang64/mingw-w64-clang-x86_64-hdf5
+          pacman -S --noconfirm clang64/mingw-w64-clang-x86_64-hdf5
       #- name: Build and test all crates
       #  run: cargo test -vv
