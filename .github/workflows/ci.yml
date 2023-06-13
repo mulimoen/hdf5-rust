@@ -146,14 +146,14 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with: {toolchain: '${{matrix.rust}}'}
       - name: Build and test all crates
-        run: cargo test --workspace -v --features hdf5-sys/static,hdf5-sys/zlib --exclude hdf5-derive
+        run: cargo test --workspace -vvv --features hdf5-sys/static,hdf5-sys/zlib --exclude hdf5-derive
       - name: Build and test with filters
-        run: cargo test --workspace -v --features hdf5-sys/static,hdf5-sys/zlib,lzf,blosc --exclude hdf5-derive
+        run: cargo test --workspace -vvv --features hdf5-sys/static,hdf5-sys/zlib,lzf,blosc --exclude hdf5-derive
         if: matrix.rust != 'stable-gnu'
       - name: Run examples
         run: |
-          cargo r --example simple --features hdf5-sys/static,hdf5-sys/zlib,lzf,blosc
-          cargo r --example chunking --features hdf5-sys/static,hdf5-sys/zlib,lzf,blosc
+          cargo r -vvv --example simple --features hdf5-sys/static,hdf5-sys/zlib,lzf,blosc
+          cargo r -vvv --example chunking --features hdf5-sys/static,hdf5-sys/zlib,lzf,blosc
         if: matrix.rust != 'stable-gnu'
 
   apt:
@@ -293,7 +293,7 @@ jobs:
       - name: Build and test
         env:
           CARGO_TARGET_X86_64_PC_WINDOWS_GNU_RUNNER: wine64
-        run: cargo test --features hdf5-sys/static --target x86_64-pc-windows-gnu -- --skip test_compile_fail
+        run: cargo test -vvv --features hdf5-sys/static --target x86_64-pc-windows-gnu -- --skip test_compile_fail
 
   addr_san:
     name: Address sanitizer
