@@ -31,7 +31,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with: {toolchain: '${{matrix.rust}}'}
       - name: Build and test all crates
-        run: cargo test --workspace -vvv --features hdf5-sys/deprecated,hdf5-sys/static,hdf5-sys/zlib --exclude hdf5-derive
+        run: cargo test --workspace -vvv --features hdf5-sys/deprecated,hdf5-sys/static,hdf5-sys/zlib --exclude hdf5-derive -j 1
       - name: Build and test with filters
         run: cargo test --workspace -vvv --features hdf5-sys/deprecated,hdf5-sys/static,hdf5-sys/zlib,lzf,blosc --exclude hdf5-derive
         if: matrix.rust != 'stable-gnu'
