@@ -661,7 +661,6 @@ impl Config {
                 "cargo::rustc-check-cfg=cfg(feature, values(\"{}.{}.{}\"))",
                 v.major, v.minor, v.micro
             );
-            println!("cargo::rustc-check-cfg=cfg(hdf5_{}_{}_{})", v.major, v.minor, v.micro);
         }
         for v in known_hdf5_versions().into_iter().filter(|&v| version >= v) {
             println!("cargo::rustc-cfg=feature=\"{}.{}.{}\"", v.major, v.minor, v.micro);

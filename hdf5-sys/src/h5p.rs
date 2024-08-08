@@ -709,14 +709,14 @@ extern "C" {
     ) -> herr_t;
     pub fn H5Pdecode(buf: *const c_void) -> hid_t;
     #[cfg_attr(
-        hdf5_1_10_1,
+        feature = "1.10.1",
         deprecated(note = "deprecated in HDF5 1.10.1, use H5Pset_file_space_strategy()")
     )]
     pub fn H5Pset_file_space(
         plist_id: hid_t, strategy: H5F_file_space_type_t, threshold: hsize_t,
     ) -> herr_t;
     #[cfg_attr(
-        hdf5_1_10_1,
+        feature = "1.10.1",
         deprecated(note = "deprecated in HDF5 1.10.1, use H5Pget_file_space_strategy()")
     )]
     pub fn H5Pget_file_space(

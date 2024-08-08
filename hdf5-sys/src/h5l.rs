@@ -275,7 +275,7 @@ extern "C" {
         loc_id: hid_t, name: *const c_char, linfo: *mut H5L_info2_t, lapl_id: hid_t,
     ) -> herr_t;
     #[cfg_attr(
-        hdf5_1_12_0,
+        feature = "1.12.0",
         deprecated(note = "deprecated in HDF5 1.12.0, use H5Lget_info_by_idx2()")
     )]
     #[cfg_attr(not(feature = "1.12.0"), link_name = "H5Lget_info_by_idx")]
@@ -307,7 +307,7 @@ extern "C" {
         op: H5L_iterate2_t, op_data: *mut c_void,
     ) -> herr_t;
     #[cfg_attr(
-        hdf5_1_12_0,
+        feature = "1.12.0",
         deprecated(note = "deprecated in HDF5 1.12.0, use H5Literate_by_name2()")
     )]
     #[cfg_attr(not(feature = "1.12.0"), link_name = "H5Literate_by_name")]
@@ -332,7 +332,7 @@ extern "C" {
         op_data: *mut c_void,
     ) -> herr_t;
     #[cfg_attr(
-        hdf5_1_12_0,
+        feature = "1.12.0",
         deprecated(note = "deprecated in HDF5 1.12.0, use H5Lvisit_by_name2()")
     )]
     #[cfg_attr(not(feature = "1.12.0"), link_name = "H5Lvisit_by_name")]
