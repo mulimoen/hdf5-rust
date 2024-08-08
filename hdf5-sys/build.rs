@@ -4,7 +4,7 @@
 use std::convert::TryInto;
 use std::env;
 use std::error::Error;
-use std::fmt::{self, Debug, Display};
+use std::fmt::{self, Debug};
 use std::fs;
 use std::os::raw::{c_int, c_uint};
 use std::path::{Path, PathBuf};
@@ -49,6 +49,16 @@ impl Debug for Version {
     }
 }
 
+fn known_hdf5_versions() -> Vec<Version> {
+    // Keep up to date with known_versions in hdf5
+    let mut vs = Vec::new();
+    vs.extend((5..=21).map(|v| Version::new(1, 8, v))); // 1.8.[5-23]
+    vs.extend((0..=8).map(|v| Version::new(1, 10, v))); // 1.10.[0-10]
+    vs.extend((0..=2).map(|v| Version::new(1, 12, v))); // 1.12.[0-2]
+    vs.extend((0..=4).map(|v| Version::new(1, 14, v))); // 1.14.[0-4]
+    vs
+}
+
 #[allow(dead_code)]
 fn run_command(cmd: &str, args: &[&str]) -> Option<String> {
     let out = Command::new(cmd).args(args).output();
@@ -78,17 +88,6 @@ fn is_msvc() -> bool {
     // `cfg!(target_env = "msvc")` will report wrong value when using
     // MSVC toolchain targeting GNU.
     std::env::var("CARGO_CFG_TARGET_ENV").unwrap() == "msvc"
-}
-
-#[derive(Clone, Debug)]
-struct RuntimeError(String);
-
-impl Error for RuntimeError {}
-
-impl Display for RuntimeError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "HDF5 runtime error: {}", self.0)
-    }
 }
 
 #[allow(non_snake_case, non_camel_case_types)]
@@ -634,59 +633,69 @@ pub struct Config {
 
 impl Config {
     pub fn emit_link_flags(&self) {
-        println!("cargo:rustc-link-lib=dylib=hdf5");
+        println!("cargo::rustc-link-lib=dylib=hdf5");
         for dir in &self.link_paths {
-            println!("cargo:rustc-link-search=native={}", dir.to_str().unwrap());
+            println!("cargo::rustc-link-search=native={}", dir.to_str().unwrap());
         }
-        println!("cargo:rerun-if-env-changed=HDF5_DIR");
-        println!("cargo:rerun-if-env-changed=HDF5_VERSION");
+        println!("cargo::rerun-if-env-changed=HDF5_DIR");
+        println!("cargo::rerun-if-env-changed=HDF5_VERSION");
 
         if is_msvc() {
-            println!("cargo:msvc_dll_indirection=1");
+            println!("cargo::metadata=msvc_dll_indirection=1");
         }
-        println!("cargo:include={}", self.inc_dir.to_str().unwrap());
+        println!("cargo::metadata=include={}", self.inc_dir.to_str().unwrap());
 
-        println!("cargo:library=hdf5");
+        println!("cargo::metadata=library=hdf5");
 
         if feature_enabled("HL") {
-            println!("cargo:hl_library=hdf5_hl");
+            println!("cargo::metadata=hl_library=hdf5_hl");
         }
     }
 
     pub fn emit_cfg_flags(&self) {
         let version = self.header.version;
         assert!(version >= Version::new(1, 8, 4), "required HDF5 version: >=1.8.4");
-        let mut vs: Vec<_> = (5..=21).map(|v| Version::new(1, 8, v)).collect(); // 1.8.[5-23]
-        vs.extend((0..=8).map(|v| Version::new(1, 10, v))); // 1.10.[0-10]
-        vs.extend((0..=2).map(|v| Version::new(1, 12, v))); // 1.12.[0-2]
-        vs.extend((0..=4).map(|v| Version::new(1, 14, v))); // 1.14.[0-4]
-        for v in vs.into_iter().filter(|&v| version >= v) {
-            println!("cargo:rustc-cfg=feature=\"{}.{}.{}\"", v.major, v.minor, v.micro);
-            println!("cargo:version_{}_{}_{}=1", v.major, v.minor, v.micro);
+
+        for v in known_hdf5_versions() {
+            println!(
+                "cargo::rustc-check-cfg=cfg(feature, values(\"{}.{}.{}\"))",
+                v.major, v.minor, v.micro
+            );
+            println!("cargo::rustc-check-cfg=cfg(hdf5_{}_{}_{})", v.major, v.minor, v.micro);
         }
+        for v in known_hdf5_versions().into_iter().filter(|&v| version >= v) {
+            println!("cargo::rustc-cfg=feature=\"{}.{}.{}\"", v.major, v.minor, v.micro);
+            println!("cargo::metadata=version_{}_{}_{}=1", v.major, v.minor, v.micro);
+        }
+
+        println!("cargo::rustc-check-cfg=cfg(have_stdbool_h)");
         if self.header.have_stdbool_h {
-            println!("cargo:rustc-cfg=have_stdbool_h");
+            println!("cargo::rustc-cfg=have_stdbool_h");
             // there should be no need to export have_stdbool_h downstream
         }
+        println!("cargo::rustc-check-cfg=cfg(feature, values(\"have-direct\"))");
         if self.header.have_direct {
-            println!("cargo:rustc-cfg=feature=\"have-direct\"");
-            println!("cargo:have_direct=1");
+            println!("cargo::rustc-cfg=feature=\"have-direct\"");
+            println!("cargo::metadata=have_direct=1");
         }
+        println!("cargo::rustc-check-cfg=cfg(feature, values(\"have-parallel\"))");
         if self.header.have_parallel {
-            println!("cargo:rustc-cfg=feature=\"have-parallel\"");
-            println!("cargo:have_parallel=1");
+            println!("cargo::rustc-cfg=feature=\"have-parallel\"");
+            println!("cargo::metadata=have_parallel=1");
         }
+        println!("cargo::rustc-check-cfg=cfg(feature, values(\"have-threadsafe\"))");
         if self.header.have_threadsafe {
-            println!("cargo:rustc-cfg=feature=\"have-threadsafe\"");
-            println!("cargo:have_threadsafe=1");
+            println!("cargo::rustc-cfg=feature=\"have-threadsafe\"");
+            println!("cargo::metadata=have_threadsafe=1");
         }
+        println!("cargo::rustc-check-cfg=cfg(feature, values(\"have-filter-deflate\"))");
         if self.header.have_filter_deflate {
-            println!("cargo:rustc-cfg=feature=\"have-filter-deflate\"");
-            println!("cargo:have_filter_deflate=1");
+            println!("cargo::rustc-cfg=feature=\"have-filter-deflate\"");
+            println!("cargo::metadata=have_filter_deflate=1");
         }
 
         if cfg!(windows) && version >= Version::new(1, 14, 0) {
-            println!("cargo:rustc-link-lib=shlwapi");
+            println!("cargo::rustc-link-lib=shlwapi");
         }
     }
 
@@ -721,31 +730,31 @@ fn main() {
 }
 
 fn get_build_and_emit() {
-    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo::rerun-if-changed=build.rs");
 
     if feature_enabled("ZLIB") {
         let zlib_lib = env::var("DEP_HDF5SRC_ZLIB").unwrap();
-        println!("cargo:zlib={}", &zlib_lib);
+        println!("cargo::metadata=zlib={}", &zlib_lib);
         let zlib_lib_header = env::var("DEP_HDF5SRC_ZLIB").unwrap();
-        println!("cargo:zlib={}", &zlib_lib_header);
-        println!("cargo:rustc-link-lib=static={}", &zlib_lib);
+        println!("cargo::metadata=zlib={}", &zlib_lib_header);
+        println!("cargo::rustc-link-lib=static={}", &zlib_lib);
     }
 
     if feature_enabled("HL") {
         let hdf5_hl_lib = env::var("DEP_HDF5SRC_HL_LIBRARY").unwrap();
-        println!("cargo:rustc-link-lib=static={}", &hdf5_hl_lib);
-        println!("cargo:hl_library={}", &hdf5_hl_lib);
+        println!("cargo::rustc-link-lib=static={}", &hdf5_hl_lib);
+        println!("cargo::metadata=hl_library={}", &hdf5_hl_lib);
     }
 
     let hdf5_root = env::var("DEP_HDF5SRC_ROOT").unwrap();
-    println!("cargo:root={}", &hdf5_root);
+    println!("cargo::metadata=root={}", &hdf5_root);
     let hdf5_incdir = env::var("DEP_HDF5SRC_INCLUDE").unwrap();
-    println!("cargo:include={}", &hdf5_incdir);
+    println!("cargo::metadata=include={}", &hdf5_incdir);
     let hdf5_lib = env::var("DEP_HDF5SRC_LIBRARY").unwrap();
-    println!("cargo:library={}", &hdf5_lib);
+    println!("cargo::metadata=library={}", &hdf5_lib);
 
-    println!("cargo:rustc-link-search=native={}/lib", &hdf5_root);
-    println!("cargo:rustc-link-lib=static={}", &hdf5_lib);
+    println!("cargo::rustc-link-search=native={}/lib", &hdf5_root);
+    println!("cargo::rustc-link-lib=static={}", &hdf5_lib);
 
     let header = Header::parse(&hdf5_incdir);
     let config = Config { header, inc_dir: "".into(), link_paths: Vec::new() };
