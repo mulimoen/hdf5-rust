@@ -1,5 +1,5 @@
 [package]
-name = "hdf5-derive"
+name = "hdf5-metno-derive"
 description = "Derive macro for HDF5 structs and enums."
 categories = ["procedural-macro-helpers"]
 readme = "README.md"
@@ -23,4 +23,4 @@ syn = { version = "2.0", features = ["derive", "extra-traits"]}
 
 [dev-dependencies]
 trybuild = "1.0"
-hdf5.workspace = true
+hdf5-metno = { path = "../hdf5" }

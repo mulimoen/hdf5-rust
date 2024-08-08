@@ -1,5 +1,5 @@
 [package]
-name = "hdf5-src"
+name = "hdf5-metno-src"
 license-file = "ext/hdf5/COPYING"
 build = "build.rs"
 description = "Build script for compiling HDF5 C library from source."

@@ -1,11 +1,10 @@
-#[macro_use]
-extern crate hdf5_derive;
-
 use std::marker::PhantomData;
 use std::mem;
 
 use hdf5::types::TypeDescriptor as TD;
 use hdf5::types::*;
+use hdf5_metno as hdf5;
+use hdf5_metno_derive::H5Type;
 
 #[derive(H5Type)]
 #[repr(C)]

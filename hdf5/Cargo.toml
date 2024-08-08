@@ -1,5 +1,5 @@
 [package]
-name = "hdf5"
+name = "hdf5-metno"
 readme = "../README.md"
 description = "Thread-safe Rust bindings for the HDF5 library."
 build = "build.rs"

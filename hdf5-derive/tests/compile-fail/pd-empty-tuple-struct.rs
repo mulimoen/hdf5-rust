@@ -1,5 +1,4 @@
-extern crate hdf5_derive;
-use hdf5_derive::H5Type;
+use hdf5_metno_derive::H5Type;
 
 use std::marker::PhantomData;
 

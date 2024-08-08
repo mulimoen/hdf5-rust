@@ -36,7 +36,7 @@ jobs:
       - name: Install HDF5
         run: sudo apt-get update && sudo apt-get install libhdf5-dev
       - name: Run cargo ${{matrix.command}}
-        run: cargo ${{matrix.command}} ${{matrix.command == 'fmt' && '--all -- --check' || '--workspace --exclude hdf5-src -- -D warnings -D clippy::cargo -A clippy::multiple-crate-versions'}}
+        run: cargo ${{matrix.command}} ${{matrix.command == 'fmt' && '--all -- --check' || '--workspace --exclude hdf5-metno-src -- -D warnings -D clippy::cargo -A clippy::multiple-crate-versions'}}
 
   doc: # This task should mirror the procedure on docs.rs
     runs-on: ubuntu-latest
@@ -152,9 +152,9 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with: {toolchain: '${{matrix.rust}}'}
       - name: Build and test all crates
-        run: cargo test --workspace -vvv --features hdf5-sys/static,hdf5-sys/zlib --exclude hdf5-derive
+        run: cargo test --workspace -vvv --features hdf5-sys/static,hdf5-sys/zlib --exclude hdf5-metno-derive
       - name: Build and test with filters and other features
-        run: cargo test --workspace -v --features hdf5-sys/static,hdf5-sys/zlib,lzf,blosc,f16,complex --exclude hdf5-derive
+        run: cargo test --workspace -v --features hdf5-sys/static,hdf5-sys/zlib,lzf,blosc,f16,complex --exclude hdf5-metno-derive
         if: matrix.rust != 'stable-gnu'
       - name: Run examples
         run: |
@@ -282,7 +282,7 @@ jobs:
         with: {toolchain: "1.77"}
       - name: Build and test all crates
         run:
-          cargo test --workspace -vv --features=hdf5-sys/static,hdf5-sys/zlib --exclude=hdf5-derive
+          cargo test --workspace -vv --features=hdf5-sys/static,hdf5-sys/zlib --exclude=hdf5-metno-derive
 
   # wine:
   #   name: wine
@@ -299,7 +299,7 @@ jobs:
   #     - name: Build and test
   #       env:
   #         CARGO_TARGET_X86_64_PC_WINDOWS_GNU_RUNNER: wine64
-  #       run: cargo test --workspace --features hdf5-sys/static --target x86_64-pc-windows-gnu --exclude=hdf5-derive
+  #       run: cargo test --workspace --features hdf5-sys/static --target x86_64-pc-windows-gnu --exclude=hdf5-metno-derive
 
   addr_san:
     name: Address sanitizer
@@ -314,4 +314,4 @@ jobs:
       - name: Run test with sanitizer
         env:
           RUSTFLAGS: "-Z sanitizer=address"
-        run: cargo test --features hdf5-sys/static --target x86_64-unknown-linux-gnu --workspace --exclude hdf5-derive
+        run: cargo test --features hdf5-sys/static --target x86_64-unknown-linux-gnu --workspace --exclude hdf5-metno-derive

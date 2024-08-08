@@ -1,5 +1,5 @@
 error: cannot derive `H5Type` for empty enums
- --> $DIR/empty-enum.rs:7:6
+ --> tests/compile-fail/empty-enum.rs:6:6
   |
-7 | enum Foo {}
+6 | enum Foo {}
   |      ^^^
