@@ -144,7 +144,7 @@ impl Default for H5F_libver_t {
 
 extern "C" {
     #[cfg_attr(
-        hdf5_1_10_2,
+        feature = "1.10.2",
         deprecated(note = "deprecated in HDF5 1.10.2, use H5Fset_libver_bounds()")
     )]
     pub fn H5Fset_latest_format(file_id: hid_t, latest_format: hbool_t) -> herr_t;
