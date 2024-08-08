@@ -1,6 +1,7 @@
 #[cfg(feature = "blosc")]
 use hdf5::filters::blosc_set_nthreads;
 use hdf5::{File, H5Type, Result};
+use hdf5_metno as hdf5;
 use ndarray::{arr2, s};
 
 #[derive(H5Type, Clone, PartialEq, Debug)] // register with HDF5

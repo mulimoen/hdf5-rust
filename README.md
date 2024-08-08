@@ -2,16 +2,16 @@
 
 HDF5 for Rust.
 
-[![Build](https://github.com/aldanor/hdf5-rust/workflows/CI/badge.svg)](https://github.com/aldanor/hdf5-rust/actions?query=branch%3Amaster)
-[![Latest Version](https://img.shields.io/crates/v/hdf5.svg)](https://crates.io/crates/hdf5)
-[![Documentation](https://docs.rs/hdf5/badge.svg)](https://docs.rs/hdf5)
-[![Changelog](https://img.shields.io/github/v/release/aldanor/hdf5-rust)](https://github.com/aldanor/hdf5-rust/blob/master/CHANGELOG.md)
+[![Build](https://github.com/metno/hdf5-rust/workflows/CI/badge.svg)](https://github.com/metno/hdf5-rust/actions?query=branch%3Amain)
+[![Latest Version](https://img.shields.io/crates/v/hdf5-metno.svg)](https://crates.io/crates/hdf5-metno)
+[![Documentation](https://docs.rs/hdf5-metno/badge.svg)](https://docs.rs/hdf5-metno)
+[![Changelog](https://img.shields.io/github/v/release/metno/hdf5-rust)](https://github.com/metno/hdf5-rust/blob/master/CHANGELOG.md)
 ![hdf5: rustc 1.77+](https://img.shields.io/badge/hdf5-rustc_1.77+-lightblue.svg)
-[![Total Lines](https://tokei.rs/b1/github/aldanor/hdf5-rust)](https://github.com/aldanor/hdf5-rust)
+[![Total Lines](https://tokei.rs/b1/github/metno/hdf5-rust)](https://github.com/metno/hdf5-rust)
 [![Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-The `hdf5` crate (previously known as `hdf5-rs`) provides thread-safe Rust bindings and 
+The `hdf5-metno` crate (also known under the pre-fork name of `hdf5`) provides thread-safe Rust bindings and 
 high-level wrappers for the HDF5 library API. Some of the features include:
 
 - Thread-safety with non-threadsafe libhdf5 builds guaranteed via reentrant mutexes.
@@ -22,6 +22,12 @@ high-level wrappers for the HDF5 library API. Some of the features include:
 Direct low-level bindings are also available and are provided in the `hdf5-sys` crate.
 
 Requires HDF5 library of version 1.8.4 or later.
+
+## Fork
+This is a fork of https://github.com/aldanor/hdf5-rust used for publishing newer versions of the crate. This includes a change in the crate name to allow publishing on crates.io. For backwards compatibility consider using the following in your `Cargo.toml`:
+```yaml
+hdf5 = { package = "hdf5-metno", version = "0.8.1" }
+```
 
 ## Example
 

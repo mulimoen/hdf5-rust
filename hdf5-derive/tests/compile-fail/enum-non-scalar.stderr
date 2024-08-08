@@ -1,5 +1,5 @@
 error: `H5Type` can only be derived for enums with scalar discriminants
- --> $DIR/enum-non-scalar.rs:7:6
+ --> tests/compile-fail/enum-non-scalar.rs:6:6
   |
-7 | enum Foo {
+6 | enum Foo {
   |      ^^^

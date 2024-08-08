@@ -23,7 +23,7 @@ pub fn derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let expanded = quote! {
         #[allow(dead_code, unused_variables, unused_attributes)]
         const #dummy: () = {
-            extern crate hdf5 as _h5;
+            use ::hdf5_metno as _h5;
 
             #[automatically_derived]
             unsafe impl #impl_generics _h5::types::H5Type for #name #ty_generics #where_clause {

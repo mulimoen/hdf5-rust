@@ -1,6 +1,7 @@
 //! Create, write, and read a chunked dataset
 
 use hdf5::{File, Result};
+use hdf5_metno as hdf5;
 use ndarray::Array2;
 
 fn main() -> Result<()> {

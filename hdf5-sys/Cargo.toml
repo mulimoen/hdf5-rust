@@ -1,5 +1,5 @@
 [package]
-name = "hdf5-sys"
+name = "hdf5-metno-sys"
 build = "build.rs"
 description = "Native bindings to the HDF5 library."
 links = "hdf5"

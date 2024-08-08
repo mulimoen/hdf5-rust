@@ -1,3 +1,5 @@
+use hdf5_metno as hdf5;
+
 #[test]
 fn roundtrip_compound_type() {
     use hdf5::H5Type;

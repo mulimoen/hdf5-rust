@@ -4,6 +4,7 @@ use std::str::FromStr;
 use hdf5::dataset::*;
 use hdf5::file::*;
 use hdf5::plist::*;
+use hdf5_metno as hdf5;
 
 macro_rules! test_pl {
     ($ty:ident, $field:ident ($($arg:expr),+): $($name:ident=$value:expr),+) => (
