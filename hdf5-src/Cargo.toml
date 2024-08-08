@@ -5,7 +5,7 @@ build = "build.rs"
 description = "Build script for compiling HDF5 C library from source."
 links = "hdf5src"
 readme = "README.md"
-categories = ["ffi"]
+categories = ["development-tools::ffi"]
 exclude = [
     "ext/hdf5/bin/**",
     "ext/hdf5/c++/**",
@@ -19,6 +19,8 @@ exclude = [
     "ext/hdf5/hl/test/**",
     "ext/hdf5/hl/tools/**",
     "ext/hdf5/hl/examples/**",
+    "ext/hdf5/HDF5Examples/**",
+    "ext/hdf5/doxygen/**",
 ]
 version.workspace = true
 rust-version.workspace = true

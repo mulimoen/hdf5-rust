@@ -26,7 +26,7 @@ Requires HDF5 library of version 1.8.4 or later.
 ## Fork
 This is a fork of https://github.com/aldanor/hdf5-rust used for publishing newer versions of the crate. This includes a change in the crate name to allow publishing on crates.io. For backwards compatibility consider using the following in your `Cargo.toml`:
 ```yaml
-hdf5 = { package = "hdf5-metno", version = "0.8.1" }
+hdf5 = { package = "hdf5-metno", version = "0.9.0" }
 ```
 
 ## Example
