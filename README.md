@@ -6,7 +6,7 @@ HDF5 for Rust.
 [![Latest Version](https://img.shields.io/crates/v/hdf5.svg)](https://crates.io/crates/hdf5)
 [![Documentation](https://docs.rs/hdf5/badge.svg)](https://docs.rs/hdf5)
 [![Changelog](https://img.shields.io/github/v/release/aldanor/hdf5-rust)](https://github.com/aldanor/hdf5-rust/blob/master/CHANGELOG.md)
-![hdf5: rustc 1.51+](https://img.shields.io/badge/hdf5-rustc_1.51+-lightblue.svg)
+![hdf5: rustc 1.77+](https://img.shields.io/badge/hdf5-rustc_1.77+-lightblue.svg)
 [![Total Lines](https://tokei.rs/b1/github/aldanor/hdf5-rust)](https://github.com/aldanor/hdf5-rust)
 [![Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -112,7 +112,7 @@ toolchains; macOS Catalina).
 ### Rust
 
 `hdf5` crate is tested continuously for all three official release channels, and
-requires a reasonably recent Rust compiler (e.g. of version 1.51 or newer).
+requires a reasonably recent Rust compiler (e.g. of version 1.77 or newer).
 
 ### HDF5
 
