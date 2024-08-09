@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 use std::mem;
+use std::sync::LazyLock;
 
 use lazy_static::lazy_static;
 
@@ -24,7 +25,7 @@ pub struct H5GlobalConstant(
 impl std::ops::Deref for H5GlobalConstant {
     type Target = hdf5_sys::h5i::hid_t;
     fn deref(&self) -> &Self::Target {
-        lazy_static::initialize(&crate::sync::LIBRARY_INIT);
+        LazyLock::force(&crate::sync::LIBRARY_INIT);
         cfg_if::cfg_if! {
             if #[cfg(msvc_dll_indirection)] {
                 let dll_ptr = self.0 as *const usize;

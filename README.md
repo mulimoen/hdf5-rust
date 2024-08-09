@@ -118,7 +118,7 @@ toolchains; macOS Catalina).
 ### Rust
 
 `hdf5` crate is tested continuously for all three official release channels, and
-requires a reasonably recent Rust compiler (e.g. of version 1.77 or newer).
+requires a reasonably recent Rust compiler (e.g. of version 1.80 or newer).
 
 ### HDF5
 
