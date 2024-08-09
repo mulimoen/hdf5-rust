@@ -65,6 +65,10 @@ mod internal_prelude {
     };
 }
 
+use parking_lot::ReentrantMutex;
+/// Lock which can be used to serialise access to the hdf5 library
+pub static LOCK: ReentrantMutex<()> = ReentrantMutex::new(());
+
 #[cfg(test)]
 mod tests {
     use super::h5::H5open;

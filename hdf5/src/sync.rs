@@ -1,40 +1,32 @@
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::LazyLock;
 
-use lazy_static::lazy_static;
-use parking_lot::ReentrantMutex;
+pub(crate) use hdf5_sys::LOCK;
 
 thread_local! {
     pub static SILENCED: AtomicBool = AtomicBool::new(false);
 }
 
-lazy_static! {
-    pub(crate) static ref LIBRARY_INIT: () = {
-        // No functions called here must try to create the LOCK,
-        // as this could cause a deadlock in initialisation
-        unsafe {
-            // Ensure hdf5 does not invalidate handles which might
-            // still be live on other threads on program exit
-            ::hdf5_sys::h5::H5dont_atexit();
-            ::hdf5_sys::h5::H5open();
-            // Ignore errors on stdout
-            crate::error::silence_errors_no_sync(true);
-            // Register filters lzf/blosc if available
-            crate::hl::filters::register_filters();
-        }
-    };
-}
+pub(crate) static LIBRARY_INIT: LazyLock<()> = LazyLock::new(|| {
+    let _guard = hdf5_sys::LOCK.lock();
+    unsafe {
+        // Ensure hdf5 does not invalidate handles which might
+        // still be live on other threads on program exit
+        ::hdf5_sys::h5::H5dont_atexit();
+        ::hdf5_sys::h5::H5open();
+        // Ignore errors on stdout
+        crate::error::silence_errors_no_sync(true);
+        // Register filters lzf/blosc if available
+        crate::hl::filters::register_filters();
+    }
+});
 
 /// Guards the execution of the provided closure with a recursive static mutex.
 pub fn sync<T, F>(func: F) -> T
 where
     F: FnOnce() -> T,
 {
-    lazy_static! {
-        static ref LOCK: ReentrantMutex<()> = {
-            lazy_static::initialize(&LIBRARY_INIT);
-            ReentrantMutex::new(())
-        };
-    }
+    let _ = LazyLock::force(&LIBRARY_INIT);
     SILENCED.with(|silence| {
         let is_silenced = silence.load(Ordering::Acquire);
         if !is_silenced {
