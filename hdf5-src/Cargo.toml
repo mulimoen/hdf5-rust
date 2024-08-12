@@ -22,7 +22,7 @@ exclude = [
     "ext/hdf5/HDF5Examples/**",
     "ext/hdf5/doxygen/**",
 ]
-version.workspace = true
+version = "0.9.1"  # !V
 rust-version.workspace = true
 authors.workspace = true
 keywords.workspace = true
