@@ -32,6 +32,7 @@ fn main() {
         "ALLOW_UNSUPPORTED",
         "HDF5_BUILD_HL_LIB",
         "HDF5_ENABLE_NONSTANDARD_FEATURE_FLOAT16",
+        "HDF5_ENABLE_SZIP_SUPPORT",
     ] {
         cfg.define(option, "OFF");
     }
