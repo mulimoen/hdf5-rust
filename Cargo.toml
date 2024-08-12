@@ -4,7 +4,7 @@ members = ["hdf5", "hdf5-types", "hdf5-derive", "hdf5-sys", "hdf5-src"]
 default-members = ["hdf5", "hdf5-types", "hdf5-derive", "hdf5-sys"]
 
 [workspace.package]
-version = "0.9.1" # !V
+version = "0.9.2" # !V
 rust-version = "1.80.0"
 authors = [
     "Ivan Smirnov <aldanor@users.noreply.github.com>",
