@@ -6,60 +6,27 @@ fn feature_enabled(feature: &str) -> bool {
 
 // Fix for: CMake Error: TRY_RUN() invoked in cross-compiling mode, please set the following cache variables appropriately
 fn configure_cmake_cross_run_advanced_cache_vars(cfg: &mut cmake::Config) {
-    cfg.define("TEST_LFS_WORKS_RUN", env::var("TEST_LFS_WORKS_RUN").unwrap_or("OFF".into()));
-    cfg.define("H5_PRINTF_LL_TEST_RUN", env::var("H5_PRINTF_LL_TEST_RUN").unwrap_or("OFF".into()));
-    cfg.define(
+    for &option in &[
+        "TEST_LFS_WORKS_RUN",
+        "H5_PRINTF_LL_TEST_RUN",
         "H5_PRINTF_LL_TEST_RUN__TRYRUN_OUTPUT",
-        env::var("H5_PRINTF_LL_TEST_RUN__TRYRUN_OUTPUT").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_LDOUBLE_TO_LONG_SPECIAL_RUN",
-        env::var("H5_LDOUBLE_TO_LONG_SPECIAL_RUN").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_LDOUBLE_TO_LONG_SPECIAL_RUN__TRYRUN_OUTPUT",
-        env::var("H5_LDOUBLE_TO_LONG_SPECIAL_RUN__TRYRUN_OUTPUT").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_LONG_TO_LDOUBLE_SPECIAL_RUN",
-        env::var("H5_LONG_TO_LDOUBLE_SPECIAL_RUN").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_LONG_TO_LDOUBLE_SPECIAL_RUN__TRYRUN_OUTPUT",
-        env::var("H5_LONG_TO_LDOUBLE_SPECIAL_RUN__TRYRUN_OUTPUT").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_LDOUBLE_TO_LLONG_ACCURATE_RUN",
-        env::var("H5_LDOUBLE_TO_LLONG_ACCURATE_RUN").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_LDOUBLE_TO_LLONG_ACCURATE_RUN__TRYRUN_OUTPUT",
-        env::var("H5_LDOUBLE_TO_LLONG_ACCURATE_RUN__TRYRUN_OUTPUT").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_LLONG_TO_LDOUBLE_CORRECT_RUN",
-        env::var("H5_LLONG_TO_LDOUBLE_CORRECT_RUN").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_LLONG_TO_LDOUBLE_CORRECT_RUN__TRYRUN_OUTPUT",
-        env::var("H5_LLONG_TO_LDOUBLE_CORRECT_RUN__TRYRUN_OUTPUT").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_DISABLE_SOME_LDOUBLE_CONV_RUN",
-        env::var("H5_DISABLE_SOME_LDOUBLE_CONV_RUN").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_DISABLE_SOME_LDOUBLE_CONV_RUN__TRYRUN_OUTPUT",
-        env::var("H5_DISABLE_SOME_LDOUBLE_CONV_RUN__TRYRUN_OUTPUT").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_NO_ALIGNMENT_RESTRICTIONS_RUN",
-        env::var("H5_NO_ALIGNMENT_RESTRICTIONS_RUN").unwrap_or("OFF".into()),
-    );
-    cfg.define(
         "H5_NO_ALIGNMENT_RESTRICTIONS_RUN__TRYRUN_OUTPUT",
-        env::var("H5_NO_ALIGNMENT_RESTRICTIONS_RUN__TRYRUN_OUTPUT").unwrap_or("OFF".into()),
-    );
+    ] {
+        println!("cargo:rerun-if-env-changed={option}");
+        let value = env::var(option).unwrap_or_else(|_| "OFF".to_string());
+        cfg.define(option, value);
+    }
 }
 
 fn main() {
