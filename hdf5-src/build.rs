@@ -23,14 +23,14 @@ fn configure_cmake_cross_run_advanced_cache_vars(cfg: &mut cmake::Config) {
         "H5_NO_ALIGNMENT_RESTRICTIONS_RUN",
         "H5_NO_ALIGNMENT_RESTRICTIONS_RUN__TRYRUN_OUTPUT",
     ] {
-        println!("cargo:rerun-if-env-changed={option}");
+        println!("cargo::rerun-if-env-changed={option}");
         let value = env::var(option).unwrap_or_else(|_| "OFF".to_string());
         cfg.define(option, value);
     }
 }
 
 fn main() {
-    println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo::rerun-if-changed=build.rs");
     let mut cfg = cmake::Config::new("ext/hdf5");
 
     // only build the static c library, disable everything else
@@ -70,8 +70,8 @@ fn main() {
         cfg.define("HDF5_ENABLE_Z_LIB_SUPPORT", "ON")
             .define("H5_ZLIB_HEADER", &zlib_header)
             .define("ZLIB_STATIC_LIBRARY", zlib_lib);
-        println!("cargo:zlib_header={}", zlib_header.to_str().unwrap());
-        println!("cargo:zlib={}", zlib_lib);
+        println!("cargo::metadata=zlib_header={}", zlib_header.to_str().unwrap());
+        println!("cargo::metadata=zlib={}", zlib_lib);
     } else {
         cfg.define("HDF5_ENABLE_Z_LIB_SUPPORT", "OFF");
     }
@@ -83,7 +83,7 @@ fn main() {
     if feature_enabled("THREADSAFE") {
         cfg.define("HDF5_ENABLE_THREADSAFE", "ON");
         if feature_enabled("HL") {
-            println!("cargo:warning=Unsupported HDF5 options: hl with threadsafe.");
+            println!("cargo::warning=Unsupported HDF5 options: hl with threadsafe.");
             cfg.define("ALLOW_UNSUPPORTED", "ON");
         }
     }
@@ -100,7 +100,7 @@ fn main() {
                 hdf5_hl_lib.push_str(debug_postfix);
             }
         }
-        println!("cargo:hl_library={}", hdf5_hl_lib);
+        println!("cargo::metadata=hl_library={}", hdf5_hl_lib);
     }
 
     if cfg!(unix) && targeting_windows {
@@ -112,10 +112,10 @@ fn main() {
 
     configure_cmake_cross_run_advanced_cache_vars(&mut cfg);
     let dst = cfg.build();
-    println!("cargo:root={}", dst.display());
+    println!("cargo::metadata=root={}", dst.display());
 
     let hdf5_incdir = format!("{}/include", dst.display());
-    println!("cargo:include={}", hdf5_incdir);
+    println!("cargo::metadata=include={}", hdf5_incdir);
 
     let mut hdf5_lib = if cfg!(target_env = "msvc") { "libhdf5" } else { "hdf5" }.to_owned();
     if let Ok(opt_level) = env::var("OPT_LEVEL") {
@@ -124,5 +124,5 @@ fn main() {
         }
     }
 
-    println!("cargo:library={}", hdf5_lib);
+    println!("cargo::metadata=library={}", hdf5_lib);
 }
