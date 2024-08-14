@@ -1,6 +1,44 @@
 # Changelog
 
-## Unreleased
+## hdf5 unreleased
+## hdf5-sys unreleased
+## hdf5-src unreleased
+## hdf5-derive unreleased
+## hdf5-types unreleased
+
+## hdf5-src v0.9.2
+
+Release date: Aug 14, 2024.
+
+### Fixed
+- Set cmake flags to avoid `try_build` for cross-compilation.
+
+## hdf5-src v0.9.1
+
+Release date: Aug 12, 2024.
+
+### Fixed
+
+- Excluded `szip` from being found by the `hdf5` build system.
+
+## hdf5 v0.9.2
+
+### Added
+
+- Support for `ndarray = "0.16"`.
+
+## hdf5-sys v0.9.1
+
+Release date: Aug 9, 2024
+
+### Added
+
+- `hdf5_sys::lock` for use by `hdf5` and others which requires synchronising with this crate.
+
+## hdf5* v0.9.0
+
+Release date: Aug 8, 2024.
+
 
 ### Added
 
@@ -15,6 +53,7 @@
 
 ### Changed
 
+- Packages are released as `hdf5-metno*`.
 - The `H5Type` derive macro now uses `proc-macro-error` to emit error messages.
 - MSRV is now `1.70.0` and Rust edition has now been bumped to 2021.
 - Types in ChunkInfo has been changed to match HDF5.
