@@ -4,6 +4,31 @@ fn feature_enabled(feature: &str) -> bool {
     env::var(format!("CARGO_FEATURE_{}", feature)).is_ok()
 }
 
+// Fix for: CMake Error: TRY_RUN() invoked in cross-compiling mode, please set the following cache variables appropriately
+fn configure_cmake_cross_run_advanced_cache_vars(cfg: &mut cmake::Config) {
+    for &option in &[
+        "TEST_LFS_WORKS_RUN",
+        "H5_PRINTF_LL_TEST_RUN",
+        "H5_PRINTF_LL_TEST_RUN__TRYRUN_OUTPUT",
+        "H5_LDOUBLE_TO_LONG_SPECIAL_RUN",
+        "H5_LDOUBLE_TO_LONG_SPECIAL_RUN__TRYRUN_OUTPUT",
+        "H5_LONG_TO_LDOUBLE_SPECIAL_RUN",
+        "H5_LONG_TO_LDOUBLE_SPECIAL_RUN__TRYRUN_OUTPUT",
+        "H5_LDOUBLE_TO_LLONG_ACCURATE_RUN",
+        "H5_LDOUBLE_TO_LLONG_ACCURATE_RUN__TRYRUN_OUTPUT",
+        "H5_LLONG_TO_LDOUBLE_CORRECT_RUN",
+        "H5_LLONG_TO_LDOUBLE_CORRECT_RUN__TRYRUN_OUTPUT",
+        "H5_DISABLE_SOME_LDOUBLE_CONV_RUN",
+        "H5_DISABLE_SOME_LDOUBLE_CONV_RUN__TRYRUN_OUTPUT",
+        "H5_NO_ALIGNMENT_RESTRICTIONS_RUN",
+        "H5_NO_ALIGNMENT_RESTRICTIONS_RUN__TRYRUN_OUTPUT",
+    ] {
+        println!("cargo:rerun-if-env-changed={option}");
+        let value = env::var(option).unwrap_or_else(|_| "OFF".to_string());
+        cfg.define(option, value);
+    }
+}
+
 fn main() {
     println!("cargo:rerun-if-changed=build.rs");
     let mut cfg = cmake::Config::new("ext/hdf5");
@@ -85,6 +110,7 @@ fn main() {
         cfg.define("CMAKE_CROSSCOMPILING_EMULATOR", wine_exec);
     }
 
+    configure_cmake_cross_run_advanced_cache_vars(&mut cfg);
     let dst = cfg.build();
     println!("cargo:root={}", dst.display());
 
@@ -97,5 +123,6 @@ fn main() {
             hdf5_lib.push_str(debug_postfix);
         }
     }
+
     println!("cargo:library={}", hdf5_lib);
 }
