@@ -35,10 +35,10 @@ jobs:
       if: "${{ startsWith(github.ref_name, 'hdf5-sys-v') }}"
       run: cargo publish --package hdf5-metno-sys --token "${{ secrets.CRATES_IO_TOKEN }}"
     - name: Publish hdf5-derive
-      if: "${{ startsWith(github.ref_name, 'hdf5-metno-derive-v') }}"
+      if: "${{ startsWith(github.ref_name, 'hdf5-derive-v') }}"
       run: cargo publish --package hdf5-metno-derive --token "${{ secrets.CRATES_IO_TOKEN }}"
     - name: Publish hdf5-types
-      if: "${{ startsWith(github.ref_name, 'hdf5-metno-types-v') }}"
+      if: "${{ startsWith(github.ref_name, 'hdf5-types-v') }}"
       run: cargo publish --package hdf5-metno-types --token "${{ secrets.CRATES_IO_TOKEN }}"
     - name: Publish hdf5
       if: "${{ startsWith(github.ref_name, 'hdf5-v') }}"
