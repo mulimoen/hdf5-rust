@@ -3,8 +3,12 @@
 ## hdf5 unreleased
 ## hdf5-sys unreleased
 ## hdf5-src unreleased
+
 ## hdf5-derive unreleased
+- Fixed crate name assumption
+
 ## hdf5-types unreleased
+
 
 ## hdf5-src v0.9.2
 
