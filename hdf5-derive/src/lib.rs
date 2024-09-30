@@ -19,7 +19,6 @@ pub fn derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let name = input.ident;
     let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
     let body = impl_trait(&name, &input.data, &input.attrs, &ty_generics);
-    let dummy = Ident::new(&format!("_IMPL_H5TYPE_FOR_{}", name), Span::call_site());
 
     // Determine name of parent crate, even if renamed using "package"
     let crate_name = match proc_macro_crate::crate_name("hdf5-metno").unwrap() {
@@ -31,7 +30,7 @@ pub fn derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     };
     let expanded = quote! {
         #[allow(dead_code, unused_variables, unused_attributes)]
-        const #dummy: () = {
+        const _: () = {
             use #crate_name as _h5;
 
             #[automatically_derived]
