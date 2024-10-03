@@ -19,7 +19,7 @@ use crate::internal_prelude::*;
 
 /// Silence errors emitted by `hdf5`
 ///
-/// Safety: This version is not thread-safe and must be syncronised
+/// Safety: This version is not thread-safe and must be synchronised
 /// with other calls to `hdf5`
 pub(crate) unsafe fn silence_errors_no_sync(silence: bool) {
     // Cast function with different argument types. This is safe because H5Eprint2 is

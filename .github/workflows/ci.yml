@@ -18,6 +18,15 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  typos:
+    name: Spell checking (typos)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check spelling
+        uses: crate-ci/typos@f12cee1d8f3c79282a98ecb41d235aef17dfa8fd # v1.25.0
+
   lint:
     name: lint
     runs-on: ubuntu-latest

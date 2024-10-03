@@ -1,0 +1,10 @@
+[files]
+extend-exclude = [
+  "hdf5-src/ext",
+  "hdf5-sys/src",
+]
+
+[default]
+extend-ignore-identifiers-re = [
+  "Dout",
+]

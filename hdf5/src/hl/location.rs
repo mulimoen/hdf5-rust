@@ -84,14 +84,14 @@ impl Location {
         File::from_id(h5try!(H5Iget_file_id(self.id())))
     }
 
-    /// Returns the commment attached to the named object, if any.
+    /// Returns the comment attached to the named object, if any.
     pub fn comment(&self) -> Option<String> {
         // TODO: should this return Result<Option<String>> or fail silently?
         let comment = h5lock!(get_h5_str(|m, s| H5Oget_comment(self.id(), m, s)).ok());
         comment.and_then(|c| if c.is_empty() { None } else { Some(c) })
     }
 
-    /// Set or the commment attached to the named object.
+    /// Set or the comment attached to the named object.
     #[deprecated(note = "attributes are preferred to comments")]
     pub fn set_comment(&self, comment: &str) -> Result<()> {
         // TODO: &mut self?
@@ -100,7 +100,7 @@ impl Location {
         h5call!(H5Oset_comment(self.id(), comment.as_ptr())).and(Ok(()))
     }
 
-    /// Clear the commment attached to the named object.
+    /// Clear the comment attached to the named object.
     #[deprecated(note = "attributes are preferred to comments")]
     pub fn clear_comment(&self) -> Result<()> {
         // TODO: &mut self?
@@ -167,7 +167,7 @@ pub enum LocationType {
 impl From<H5O_type_t> for LocationType {
     fn from(loc_type: H5O_type_t) -> Self {
         // we're assuming here that if a C API call returns H5O_TYPE_UNKNOWN (-1), then
-        // an error has occured anyway and has been pushed on the error stack so we'll
+        // an error has occurred anyway and has been pushed on the error stack so we'll
         // catch it, and the value of -1 will never reach this conversion function
         match loc_type {
             H5O_type_t::H5O_TYPE_DATASET => Self::Dataset,
