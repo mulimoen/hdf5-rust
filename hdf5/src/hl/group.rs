@@ -323,7 +323,7 @@ impl Group {
                 let vtable = unsafe { vtable.as_mut().expect("iter_visit: null op_data ptr") };
                 unsafe { name.as_ref().expect("iter_visit: null name ptr") };
                 let name = unsafe { std::ffi::CStr::from_ptr(name) };
-                let info = unsafe { info.as_ref().expect("iter_vist: null info ptr") };
+                let info = unsafe { info.as_ref().expect("iter_visit: null info ptr") };
                 let handle = Handle::try_borrow(id).expect("iter_visit: unable to create a handle");
                 let group = Group::from_handle(handle);
                 let ret =
@@ -371,7 +371,7 @@ impl Group {
                     return true; // ok, object is of another type, skipped
                 }
             }
-            false // an error occured somewhere along the way
+            false // an error occurred somewhere along the way
         })
     }
 

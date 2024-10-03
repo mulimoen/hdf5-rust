@@ -205,7 +205,7 @@ fn test_byte_read_seek_impl(ds: &hdf5::Dataset, arr: &ArrayD<u8>, ndim: usize) -
         pos += chunk_len;
     }
 
-    // Seek to the begining and read again
+    // Seek to the beginning and read again
     reader.seek(SeekFrom::Start(0)).expect("io::Seek failed");
     let mut out_bytes = vec![0u8; arr.len()];
     reader.read(&mut out_bytes.as_mut_slice()).expect("io::Read failed");
@@ -213,10 +213,10 @@ fn test_byte_read_seek_impl(ds: &hdf5::Dataset, arr: &ArrayD<u8>, ndim: usize) -
 
     // Seek to a random position from start
     let pos = rng.gen_range(0..arr.len() + 1) as u64;
-    let seeked_pos = reader.seek(SeekFrom::Start(pos)).expect("io::Seek failed") as usize;
-    let mut out_bytes = vec![0u8; arr.len() - seeked_pos];
+    let seek_pos = reader.seek(SeekFrom::Start(pos)).expect("io::Seek failed") as usize;
+    let mut out_bytes = vec![0u8; arr.len() - seek_pos];
     reader.read(&mut out_bytes.as_mut_slice()).expect("io::Read failed");
-    assert_eq!(out_bytes.as_slice(), arr.slice(s![seeked_pos..]).as_slice().unwrap());
+    assert_eq!(out_bytes.as_slice(), arr.slice(s![seek_pos..]).as_slice().unwrap());
 
     // Seek from current position
     let orig_pos = reader.seek(SeekFrom::Start(pos)).expect("io::Seek failed") as i64;
@@ -225,20 +225,20 @@ fn test_byte_read_seek_impl(ds: &hdf5::Dataset, arr: &ArrayD<u8>, ndim: usize) -
     if (rel_pos + orig_pos) < 0 {
         assert!(pos_res.is_err()) // We cannot seek before start
     } else {
-        let seeked_pos = pos_res.unwrap() as usize;
-        assert_eq!(rel_pos + orig_pos, seeked_pos as i64);
-        let mut out_bytes = vec![0u8; arr.len() - seeked_pos];
+        let seek_pos = pos_res.unwrap() as usize;
+        assert_eq!(rel_pos + orig_pos, seek_pos as i64);
+        let mut out_bytes = vec![0u8; arr.len() - seek_pos];
         reader.read(&mut out_bytes.as_mut_slice()).expect("io::Read failed");
-        assert_eq!(out_bytes.as_slice(), arr.slice(s![seeked_pos..]).as_slice().unwrap());
+        assert_eq!(out_bytes.as_slice(), arr.slice(s![seek_pos..]).as_slice().unwrap());
     }
 
     // Seek to a random position from end
     let pos = -(rng.gen_range(0..arr.len() + 1) as i64);
-    let seeked_pos = reader.seek(SeekFrom::End(pos)).expect("io::Seek failed") as usize;
-    assert_eq!(pos, seeked_pos as i64 - arr.len() as i64);
-    let mut out_bytes = vec![0u8; arr.len() - seeked_pos];
+    let seek_pos = reader.seek(SeekFrom::End(pos)).expect("io::Seek failed") as usize;
+    assert_eq!(pos, seek_pos as i64 - arr.len() as i64);
+    let mut out_bytes = vec![0u8; arr.len() - seek_pos];
     reader.read(&mut out_bytes.as_mut_slice()).expect("io::Read failed");
-    assert_eq!(out_bytes.as_slice(), arr.slice(s![seeked_pos..]).as_slice().unwrap());
+    assert_eq!(out_bytes.as_slice(), arr.slice(s![seek_pos..]).as_slice().unwrap());
 
     // Seek before start
     assert!(reader.seek(SeekFrom::End(-(arr.len() as i64) - 1)).is_err());
