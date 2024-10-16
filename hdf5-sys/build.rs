@@ -50,12 +50,12 @@ impl Debug for Version {
 }
 
 fn known_hdf5_versions() -> Vec<Version> {
-    // Keep up to date with known_versions in hdf5
+    // Keep up to date with known_hdf5_versions in hdf5
     let mut vs = Vec::new();
     vs.extend((5..=21).map(|v| Version::new(1, 8, v))); // 1.8.[5-23]
     vs.extend((0..=8).map(|v| Version::new(1, 10, v))); // 1.10.[0-10]
     vs.extend((0..=2).map(|v| Version::new(1, 12, v))); // 1.12.[0-2]
-    vs.extend((0..=4).map(|v| Version::new(1, 14, v))); // 1.14.[0-4]
+    vs.extend((0..=5).map(|v| Version::new(1, 14, v))); // 1.14.[0-5]
     vs
 }
 
