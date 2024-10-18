@@ -734,9 +734,6 @@ fn get_build_and_emit() {
     if feature_enabled("ZLIB") {
         let zlib_lib = env::var("DEP_HDF5SRC_ZLIB").unwrap();
         println!("cargo::metadata=zlib={}", &zlib_lib);
-        let zlib_lib_header = env::var("DEP_HDF5SRC_ZLIB").unwrap();
-        println!("cargo::metadata=zlib={}", &zlib_lib_header);
-        println!("cargo::rustc-link-lib=static={}", &zlib_lib);
     }
 
     if feature_enabled("HL") {

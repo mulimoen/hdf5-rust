@@ -27,7 +27,7 @@ default = []
 mpio = ["dep:mpi-sys"]
 hl = ["hdf5-src?/hl"]
 threadsafe = ["hdf5-src?/threadsafe"]
-zlib = ["libz-sys", "hdf5-src?/zlib"]
+zlib = ["dep:libz-sys", "hdf5-src?/zlib"]
 static = ["dep:hdf5-src"]
 deprecated = ["hdf5-src?/deprecated"]
 

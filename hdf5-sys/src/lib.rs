@@ -8,6 +8,13 @@
 #![allow(clippy::module_name_repetitions)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+#[cfg(feature = "static")]
+extern crate hdf5_src;
+#[cfg(feature = "zlib")]
+extern crate libz_sys;
+#[cfg(feature = "mpio")]
+extern crate mpi_sys;
+
 macro_rules! extern_static {
     ($dest:ident, $src:ident) => {
         extern "C" {
