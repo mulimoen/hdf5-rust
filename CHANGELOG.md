@@ -1,10 +1,17 @@
 # Changelog
 
 ## hdf5 unreleased
-## hdf5-sys unreleased
-## hdf5-src unreleased
 ## hdf5-derive unreleased
 ## hdf5-types unreleased
+
+## hdf5-sys unreleased
+- Fixed linking to libz
+- Added support for hdf5 1.14.5
+- Removed implicit `libz-sys` feature (breaking change)
+
+## hdf5-src unreleased
+- Fixed linking to libz
+- Bumped bundled hdf5 to 1.14.5
 
 
 ## hdf5-derive v0.9.1
