@@ -86,6 +86,16 @@ extern "C" {
     pub fn H5Ecreate_msg(cls: hid_t, msg_type: H5E_type_t, msg: *const c_char) -> hid_t;
     pub fn H5Ecreate_stack() -> hid_t;
     pub fn H5Eget_current_stack() -> hid_t;
+    #[cfg(feature = "1.14.0")]
+    pub fn H5Eappend_stack(
+        dst_stack_id: hid_t, src_stack_id: hid_t, close_source_stack: hbool_t,
+    ) -> herr_t;
+    #[cfg(feature = "1.14.5")]
+    pub fn H5Eis_paused(stack_id: hid_t, is_paused: *mut hbool_t) -> herr_t;
+    #[cfg(feature = "1.14.5")]
+    pub fn H5Epause_stack(stack_id: hid_t) -> herr_t;
+    #[cfg(feature = "1.14.5")]
+    pub fn H5Eresume_stack(stack_id: hid_t) -> herr_t;
     pub fn H5Eclose_stack(stack_id: hid_t) -> herr_t;
     pub fn H5Eget_class_name(class_id: hid_t, name: *mut c_char, size: size_t) -> ssize_t;
     pub fn H5Eset_current_stack(err_stack_id: hid_t) -> herr_t;
@@ -130,11 +140,6 @@ extern "C" {
     pub fn H5Eget_major(maj: H5E_major_t) -> *mut c_char;
     #[deprecated(note = "deprecated in HDF5 1.8.0")]
     pub fn H5Eget_minor(min: H5E_minor_t) -> *mut c_char;
-
-    #[cfg(feature = "1.14.0")]
-    pub fn H5Eappend_stack(
-        dst_stack_id: hid_t, src_stack_id: hid_t, close_source_stack: hbool_t,
-    ) -> herr_t;
 }
 
 pub use self::globals::*;
