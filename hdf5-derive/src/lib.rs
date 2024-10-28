@@ -5,7 +5,7 @@ use std::mem;
 use std::str::FromStr;
 
 use proc_macro2::{Ident, Span, TokenStream};
-use proc_macro_error::{abort, proc_macro_error};
+use proc_macro_error2::{abort, proc_macro_error};
 use quote::{quote, ToTokens};
 use syn::{
     parse_macro_input, AttrStyle, Attribute, Data, DeriveInput, Expr, Fields, Index, LitStr, Type,
